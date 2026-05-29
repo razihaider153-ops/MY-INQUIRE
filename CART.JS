@@ -3,6 +3,7 @@
 // Render cart items on page load
 document.addEventListener('DOMContentLoaded', function() {
     renderCartItems();
+    enforceCashOnDelivery();
     setupEventListeners();
     updatePaymentForm();
 });
@@ -150,6 +151,36 @@ function setupEventListeners() {
     });
 }
 
+// ===== Cash On Delivery Only =====
+function enforceCashOnDelivery() {
+    document.querySelectorAll('input[name="paymentMethod"]').forEach(input => {
+        if (input.value !== 'cash-on-delivery') {
+            input.closest('.method-option')?.remove();
+        }
+    });
+
+    const cashOnDelivery = document.getElementById('cashOnDelivery');
+    if (cashOnDelivery) {
+        cashOnDelivery.checked = true;
+        const methodIcon = document.querySelector('label[for="cashOnDelivery"] .method-icon');
+        if (methodIcon) {
+            methodIcon.textContent = 'Cash';
+        }
+    }
+
+    document.getElementById('creditCardForm')?.remove();
+
+    const paymentMethodTab = document.getElementById('payment-method');
+    if (paymentMethodTab && !paymentMethodTab.querySelector('.payment-note')) {
+        paymentMethodTab.insertAdjacentHTML('beforeend', `
+            <div class="payment-form active">
+                <h4>Pay when your order arrives</h4>
+                <p class="payment-note">Please keep the exact amount ready for the delivery rider.</p>
+            </div>
+        `);
+    }
+}
+
 // ===== Payment Modal Functions =====
 let currentTab = 'payment-method';
 
@@ -198,16 +229,15 @@ function updateTabUI() {
 
 // ===== Update Payment Form =====
 function updatePaymentForm() {
-    const selectedMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+    const selectedMethod = document.querySelector('input[name="paymentMethod"]:checked')?.value;
     
     // Hide all payment forms
     document.querySelectorAll('.payment-form').forEach(form => {
         form.classList.remove('active');
     });
     
-    // Show selected payment form
-    if (selectedMethod === 'credit-card') {
-        document.getElementById('creditCardForm')?.classList.add('active');
+    if (selectedMethod === 'cash-on-delivery') {
+        document.querySelector('#payment-method .payment-form')?.classList.add('active');
     }
 }
 
@@ -242,22 +272,6 @@ function validateCurrentTab() {
             showNotification('Please select a payment method', 'error');
             return false;
         }
-        
-        if (selectedMethod === 'credit-card') {
-            const cardInputs = document.querySelectorAll('#creditCardForm .form-input');
-            let isValid = true;
-            
-            cardInputs.forEach(input => {
-                if (!input.value.trim()) {
-                    isValid = false;
-                }
-            });
-            
-            if (!isValid) {
-                showNotification('Please fill in all card details', 'error');
-                return false;
-            }
-        }
     }
     
     if (currentTab === 'billing') {
@@ -290,10 +304,10 @@ function completeOrder() {
     
     const selectedMethod = document.querySelector('input[name="paymentMethod"]:checked')?.value;
     
-    // Simulate payment processing
+    // Confirm cash on delivery order
     const completeBtn = document.getElementById('completeBtn');
     const originalText = completeBtn.textContent;
-    completeBtn.textContent = 'Processing Payment...';
+    completeBtn.textContent = 'Placing Order...';
     completeBtn.disabled = true;
     
     setTimeout(() => {
@@ -389,17 +403,5 @@ function showOrderConfirmation(orderId, total) {
     // Show notification
     showNotification(`Order ${orderId} confirmed!`, 'success');
 }
-
-// ===== Format Card Number =====
-document.addEventListener('DOMContentLoaded', function() {
-    const cardInput = document.querySelector('.card-number');
-    if (cardInput) {
-        cardInput.addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\s/g, '');
-            let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
-            e.target.value = formattedValue;
-        });
-    }
-});
 
 console.log('Shopping Cart Functionality Initialized');

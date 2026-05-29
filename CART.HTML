@@ -128,63 +128,16 @@
                     <h3>Select Payment Method</h3>
                     <div class="payment-methods">
                         <div class="method-option">
-                            <input type="radio" id="creditCard" name="paymentMethod" value="credit-card" checked>
-                            <label for="creditCard" class="method-label">
-                                <span class="method-icon">💳</span>
-                                <span class="method-name">Credit/Debit Card</span>
-                            </label>
-                        </div>
-                        <div class="method-option">
-                            <input type="radio" id="paypal" name="paymentMethod" value="paypal">
-                            <label for="paypal" class="method-label">
-                                <span class="method-icon">🅿️</span>
-                                <span class="method-name">PayPal</span>
-                            </label>
-                        </div>
-                        <div class="method-option">
-                            <input type="radio" id="stripe" name="paymentMethod" value="stripe">
-                            <label for="stripe" class="method-label">
-                                <span class="method-icon">💰</span>
-                                <span class="method-name">Stripe Payment</span>
-                            </label>
-                        </div>
-                        <div class="method-option">
-                            <input type="radio" id="applePay" name="paymentMethod" value="apple-pay">
-                            <label for="applePay" class="method-label">
-                                <span class="method-icon">🍎</span>
-                                <span class="method-name">Apple Pay</span>
-                            </label>
-                        </div>
-                        <div class="method-option">
-                            <input type="radio" id="googlePay" name="paymentMethod" value="google-pay">
-                            <label for="googlePay" class="method-label">
-                                <span class="method-icon">🔵</span>
-                                <span class="method-name">Google Pay</span>
+                            <input type="radio" id="cashOnDelivery" name="paymentMethod" value="cash-on-delivery" checked>
+                            <label for="cashOnDelivery" class="method-label">
+                                <span class="method-icon">Cash</span>
+                                <span class="method-name">Cash on Delivery</span>
                             </label>
                         </div>
                     </div>
-
-                    <!-- Credit Card Form -->
-                    <div id="creditCardForm" class="payment-form active">
-                        <h4>Enter Card Details</h4>
-                        <div class="form-group">
-                            <label>Cardholder Name</label>
-                            <input type="text" placeholder="John Doe" class="form-input">
-                        </div>
-                        <div class="form-group">
-                            <label>Card Number</label>
-                            <input type="text" placeholder="1234 5678 9012 3456" class="form-input card-number" maxlength="19">
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Expiry Date</label>
-                                <input type="text" placeholder="MM/YY" class="form-input" maxlength="5">
-                            </div>
-                            <div class="form-group">
-                                <label>CVV</label>
-                                <input type="text" placeholder="123" class="form-input cvv" maxlength="4">
-                            </div>
-                        </div>
+                    <div class="payment-form active">
+                        <h4>Pay when your order arrives</h4>
+                        <p class="payment-note">Please keep the exact amount ready for the delivery rider.</p>
                     </div>
                 </div>
 
